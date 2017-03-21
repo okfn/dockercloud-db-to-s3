@@ -1,5 +1,8 @@
 FROM python:2.7-alpine
 
-RUN pip install python-dockercloud
+RUN apk add --update --no-cache libpq wget python-dev postgresql-dev build-base postgresql
+RUN pip install python-dockercloud psycopg2 s3cmd
 
-CMD sleep 864000
+COPY backup.py /
+
+CMD python /backup.py
