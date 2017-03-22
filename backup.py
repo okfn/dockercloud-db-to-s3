@@ -32,15 +32,15 @@ def get_latest_md5(db_name, table):
 def handle_table(db_url, table):
     start = time.time()
     db_name = db_url.split('/')[-1]
-    print('\tGot table "%s/%s"' % (db_name, table))
+    # print('\tGot table "%s/%s"' % (db_name, table))
     latest_hash = get_latest_md5(db_name, table)
-    print('\tExisting hash "%s"' % latest_hash)
+    # print('\tExisting hash "%s"' % latest_hash)
     cmd = 'pg_dump -t "%s" "%s" | gzip | md5sum' % (table, db_url)
     # print('#',cmd)
     proc = subprocess.Popen(['/bin/sh', '-c', cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     current_hash, _ = proc.communicate()
     current_hash = current_hash.split()[0][:6]
-    print('\tCurrent hash "%s"' % (current_hash, ))
+    # print('\tCurrent hash "%s"' % (current_hash, ))
     if latest_hash is None:
         status = 'NEW'
     elif current_hash != latest_hash:
