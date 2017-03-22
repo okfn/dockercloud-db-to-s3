@@ -1,8 +1,14 @@
 FROM python:2.7-alpine
 
-RUN apk add --update --no-cache libpq wget python-dev postgresql-dev build-base postgresql
-RUN pip install python-dockercloud psycopg2 s3cmd
-
 COPY backup.py /
+COPY crontab /etc/cron.d/do-backup
 
-CMD python /backup.py
+RUN apk add --update --no-cache libpq wget python-dev postgresql-dev build-base postgresql dcron
+RUN pip install python-dockercloud psycopg2 s3cmd
+RUN chmod 0644 /etc/cron.d/do-backup
+RUN touch /var/log/cron.log
+
+# Run the command on container startup
+CMD python /backup.py && \
+    crond -s /etc/cron.d -b -L /var/log/cron.log && \
+    tail -f /var/log/cron.log
