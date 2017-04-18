@@ -1,4 +1,4 @@
-FROM python:2.7-alpine
+FROM frolvlad/alpine-python2
 
 COPY backup.py /
 COPY crontab /etc/cron.d/do-backup
