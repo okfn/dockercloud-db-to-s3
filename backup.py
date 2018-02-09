@@ -12,7 +12,9 @@ BUCKET = os.environ['S3_BUCKET']
 NAMESPACE = os.environ['S3_NAMESPACE']
 ACCESS_KEY = os.environ['AWS_ACCESS_KEY']
 SECRET_KEY = os.environ['AWS_SECRET_KEY']
-s3cmd = 's3cmd --access_key="%s" --secret_key="%s"' % (ACCESS_KEY, SECRET_KEY)
+HOST = os.environ.get('S3_HOST', 's3.amazonaws.com')
+HOST_BUCKET = os.environ.get('S3_HOST_BUCKET', '%(bucket)s.s3.amazonaws.com')
+s3cmd = 's3cmd --access_key="%s" --secret_key="%s" --host="%s" --host-bucket="%s"' % (ACCESS_KEY, SECRET_KEY, HOST, HOST_BUCKET)
 bucket_prefix = 's3://%s/db_backups/%s' % (BUCKET, NAMESPACE)
 
 
